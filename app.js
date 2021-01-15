@@ -117,7 +117,6 @@ const promptAddMore = () => {
 
 const internQuestions = () => {
     inquirer.prompt(internInfo).then(ans => {
-        console.log(ans);
         employeeArr.push(new Intern(ans.internName, ans.internID, ans.internEmail, ans.internSchool));
         promptAddMore();
     });
@@ -126,7 +125,6 @@ const internQuestions = () => {
 const engineerQuestions = () => {
 
     inquirer.prompt(engineerInfo).then(ans => {
-        console.log(ans);
         employeeArr.push(new Engineer(ans.engineerName, ans.engineerID, ans.engineerEmail, ans.engineerGithub));
         promptAddMore();
     });
