@@ -9,8 +9,12 @@
    - [Usage](#usage)
    - [Contributing](#contributing)
    - [Contact Us](#contact)
+   - [Example](#example)
 
   
+  ## Example
+  ![example](employee-summary.gif)
+
   ## Description 
   Created an application that will prompt the user to input manager, intern, and engineer information about each team member to create an HTML file to show all of the data for each team member.
   
