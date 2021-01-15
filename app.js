@@ -2,13 +2,15 @@ const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
-const path = require("path");
+// const path = require("path");
 const fs = require("fs");
 
-const OUTPUT_DIR = path.resolve(__dirname, "output");
-const outputPath = path.join(OUTPUT_DIR, "team.html");
+// const OUTPUT_DIR = path.resolve(__dirname, "output");
+// const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+
+let employeeArr = [];
 
 // Manager Info question Array
 const managerInfo = [
@@ -86,25 +88,26 @@ const internInfo = [
 const addMore = [
     {
         type: "list",
-        name: "addAnother",
+        name: "addList",
         choices: ["Engineer", "Intern", "I am done adding team members."],
         message: "Add Another?"
     }
 ];
 
 inquirer.prompt(managerInfo).then(ans =>{
-    mainArr.push(new Manager(ans.managerName, ans.managerID, ans.managerEmail, ans.managerOfficeNumber));
+    console.log(ans);
+    employeeArr.push(new Manager(ans.managerName, ans.managerID, ans.managerEmail, ans.managerOfficeNumber));
     promptAddMore();
 });
 
 const promptAddMore = () => {
     inquirer.prompt(addMore).then(data => {
-        switch (data.addAnother){
+        switch (data.addList){
             case "Intern":
                 internQuestions();
                 break;
             case "Engineer":
-                promptEngineer();
+                engineerQuestions();
                 break;
             default:
                 produceHTML();
@@ -114,27 +117,24 @@ const promptAddMore = () => {
 
 const internQuestions = () => {
     inquirer.prompt(internInfo).then(ans => {
-        mainArr.push(new Intern(ans.internName, ans.internID, ans.internEmail, ans.internSchool));
+        console.log(ans);
+        employeeArr.push(new Intern(ans.internName, ans.internID, ans.internEmail, ans.internSchool));
         promptAddMore();
     });
 }
 
 const engineerQuestions = () => {
-    inquirer.prompt(internInfo).then(ans => {
-        mainArr.push(new Intern(ans.engineerName, ans.engineerID, ans.engineerEmail, ans.engineerGithub));
+
+    inquirer.prompt(engineerInfo).then(ans => {
+        console.log(ans);
+        employeeArr.push(new Engineer(ans.engineerName, ans.engineerID, ans.engineerEmail, ans.engineerGithub));
         promptAddMore();
     });
 }
 
 const produceHTML = () => {
-    render(mainArr);
-    fs.writeFile("output/team.html", render(mainArr));
+    render(employeeArr);
+    fs.writeFile('output/team.html', render(employeeArr), function(err){
+        if(err) throw err;
+    });
 }
-
-
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
